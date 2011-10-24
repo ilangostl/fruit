@@ -44,10 +44,10 @@ object FruitDemo extends App {
 
 object Display {
   def display(title: String, component: Component) {
-    val frame = new JFrame(title);
-    frame.add(component);
-    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    frame.pack();
-    frame.setVisible(true);
+    val frame = new JFrame(title)
+    frame.add(component)
+    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE)
+    frame.pack()
+    frame.setVisible(true)
   }
 }
