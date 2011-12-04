@@ -10,7 +10,7 @@ import javax.swing.JPanel
 
 object FruitDemo extends App {
 
-  import Fruit.fruit
+  import Fruit.monitor
 
   Display.display("Fruit Demo", simpleUi)
 
@@ -24,10 +24,10 @@ object FruitDemo extends App {
     val label3 = new JLabel()
     val label4 = new JLabel()
 
-    fruit(combo1) { name => label1.setText(name()) }
-    fruit(combo2) { desc => label2.setText(desc()) }
-    fruit(combo1, combo2) { (name, desc) => label3.setText(name() + " is " + desc()) }
-    fruit(combo1, combo2) { (name, desc) => label4.setText(name() + " ain't " + desc()) }
+    monitor(combo1) { name => label1.setText(name()) }
+    monitor(combo2) { desc => label2.setText(desc()) }
+    monitor(combo1, combo2) { (name, desc) => label3.setText(name() + " is " + desc()) }
+    monitor(combo1, combo2) { (name, desc) => label4.setText(name() + " ain't " + desc()) }
 
     panel.add(label1)
     panel.add(label2)

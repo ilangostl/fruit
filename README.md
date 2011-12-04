@@ -6,4 +6,5 @@ http://www.earldouglas.com/declarative-ui-behavior-with-fruit/
 
 # Demo
 
-    > sbt/sbt run
+    > sbt/sbt "demos/run-main fruit.FruitDemo"
+

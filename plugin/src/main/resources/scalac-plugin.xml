@@ -1,0 +1,4 @@
+<plugin>
+  <name>fruit</name>
+  <classname>fruit.FruitPlugin</classname>
+</plugin>

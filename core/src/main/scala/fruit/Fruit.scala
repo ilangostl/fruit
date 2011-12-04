@@ -9,8 +9,8 @@ import scala.util.continuations.suspendable
 
 object Fruit {
 
-  def fruit(a: Selectable)(f: Signal => Unit @suspendable): Unit = reset(f(new Signal(a)))
-  def fruit(a: Selectable, b: Selectable)(f: (Signal, Signal) => Unit @suspendable): Unit = reset(f(new Signal(a), new Signal(b)))
+  def monitor(a: Selectable)(f: Signal => Unit @suspendable): Unit = reset(f(new Signal(a)))
+  def monitor(a: Selectable, b: Selectable)(f: (Signal, Signal) => Unit @suspendable): Unit = reset(f(new Signal(a), new Signal(b)))
 
   class Signal(selectable: Selectable) {
 
@@ -18,9 +18,7 @@ object Fruit {
 
     selectable.addActionListener(new ActionListener() {
       def actionPerformed(e: ActionEvent) {
-        c.foreach { k =>
-          k(selectable.getSelectedItem.toString)
-        }
+        c.foreach { k => k(selectable.getSelectedItem.toString) }
       }
     })
 
