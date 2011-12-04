@@ -9,20 +9,12 @@ import scala.util.continuations.suspendable
 
 object Fruit {
 
-  type Signals = collection.mutable.HashMap[Selectable, Signal]
-
-  def signal(selectable: Selectable)(implicit signals: Signals): String @suspendable = shift { k: (String => Unit) =>
-    if (!signals.contains(selectable)) signals(selectable) = new Signal(selectable)
-    signals(selectable)(k)
-  }
-
-  def fruit(f: Signals => Unit @suspendable) = {
-    reset(f(new Signals()))
-  }
+  def fruit(a: Selectable)(f: Signal => Unit @suspendable): Unit = reset(f(new Signal(a)))
+  def fruit(a: Selectable, b: Selectable)(f: (Signal, Signal) => Unit @suspendable): Unit = reset(f(new Signal(a), new Signal(b)))
 
   class Signal(selectable: Selectable) {
 
-    private var c: List[String => Unit] = Nil
+    private var c: Option[String => Unit] = None
 
     selectable.addActionListener(new ActionListener() {
       def actionPerformed(e: ActionEvent) {
@@ -32,8 +24,8 @@ object Fruit {
       }
     })
 
-    def apply(k: (String => Unit)) {
-      c = c ::: k :: Nil
+    def apply(): String @suspendable = shift { k: (String => Unit) =>
+      c = Option(k)
       k(selectable.getSelectedItem.toString)
     }
   }
