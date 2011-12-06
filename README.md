@@ -6,6 +6,11 @@ http://www.earldouglas.com/declarative-ui-behavior-with-fruit/
 
 # Demo
 
+To run the demo, first build the Scala compiler plugin:
+
     > sbt/sbt "fruit-plugin/package"
+
+Then run the demo:
+
     > sbt/sbt "fruit-demos/run-main fruit.FruitDemo"
 
