@@ -9,8 +9,18 @@ import scala.util.continuations.suspendable
 
 object Fruit {
 
-  def monitor(a: Selectable)(f: Signal => Unit @suspendable): Unit = reset(f(new Signal(a)))
-  def monitor(a: Selectable, b: Selectable)(f: (Signal, Signal) => Unit @suspendable): Unit = reset(f(new Signal(a), new Signal(b)))
+  type Signals = collection.mutable.HashMap[Int, Signal]
+
+  def signal(selectable: Selectable): String = ""
+
+  def signal(selectable: Selectable, id: Int)(implicit signals: Signals): String @suspendable = shift { k: (String => Unit) =>
+    if (!signals.contains(id)) signals(id) = new Signal(selectable)
+    signals(id)(k)
+  }
+
+  def fruit(f: Signals => Unit @suspendable) = {
+    reset(f(new Signals()))
+  }
 
   class Signal(selectable: Selectable) {
 
@@ -22,7 +32,7 @@ object Fruit {
       }
     })
 
-    def apply(): String @suspendable = shift { k: (String => Unit) =>
+    def apply(k: (String => Unit)) {
       c = Option(k)
       k(selectable.getSelectedItem.toString)
     }
@@ -33,5 +43,4 @@ object Fruit {
     def addActionListener(a: ActionListener): Unit
   }
 }
-
  
