@@ -11,7 +11,8 @@ object Fruit {
 
   type Signals = collection.mutable.HashMap[Int, Signal]
 
-  def signal(selectable: Selectable): String = ""
+  def signal(selectable: Selectable): String =
+    throw new NoSuchMethodException("this code must be compiled with the Fruit plugin")
 
   def signal(selectable: Selectable, id: Int)(implicit signals: Signals): String @suspendable = shift { k: (String => Unit) =>
     if (!signals.contains(id)) signals(id) = new Signal(selectable)

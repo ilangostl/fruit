@@ -21,8 +21,8 @@ object ProjectBuild extends Build {
     id = "fruit-demos",
     base = file("demos"),
     dependencies = Seq(core),
-    settings = buildSettings ++ Seq(
-      scalacOptions += ("-Xplugin:./plugin/target/scala-2.9.1/fruit-plugin_2.9.1-0.1-SNAPSHOT.jar")))
+    settings = buildSettings ++ Seq(addCompilerPlugin("com.earldouglas" %% "fruit-plugin" % "0.1-SNAPSHOT"))
+  )
 
   lazy val plugin = Project(
     id = "fruit-plugin",

@@ -8,7 +8,7 @@ http://www.earldouglas.com/declarative-ui-behavior-with-fruit/
 
 To run the demo, first build the Scala compiler plugin:
 
-    > sbt/sbt "fruit-plugin/package"
+    > sbt/sbt "fruit-plugin/publish-local"
 
 Then run the demo:
 

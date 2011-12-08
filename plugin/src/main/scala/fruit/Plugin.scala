@@ -19,6 +19,7 @@ class FruitPlugin(val global: Global) extends Plugin {
 
     val runsAfter = List[String]("parser")
     override val runsBefore = List[String]("namer")
+
     val phaseName = FruitPlugin.this.name
 
     private[this] var counter: Int = 0
