@@ -3,18 +3,13 @@ package fruit
 import java.awt.Component
 import java.awt.GridLayout
 
-import Fruit.Signals
-import Fruit.fruit
-import Fruit.signal
 import javax.swing.JComboBox
 import javax.swing.JFrame
 import javax.swing.JLabel
 import javax.swing.JPanel
 
-object FruitDemo extends App {
-
-  import Fruit.{ fruit, Signals, signal }
-
+object FruitDemo extends App with Fruit {
+  
   Display.display("Fruit Demo", simpleUi)
 
   def simpleUi = {
@@ -27,19 +22,19 @@ object FruitDemo extends App {
     val label3 = new JLabel()
     val label4 = new JLabel()
 
-    fruit { implicit s: Signals =>
+    fruit { 
       label1.setText(signal(combo1))
       label2.setText(signal(combo2))
       label3.setText(signal(combo1) + " is " + signal(combo2))
       label4.setText(signal(combo1) + " ain't " + signal(combo2))
     }
 
+    panel.add(combo1)
+    panel.add(combo2)
     panel.add(label1)
     panel.add(label2)
     panel.add(label3)
     panel.add(label4)
-    panel.add(combo1)
-    panel.add(combo2)
 
     panel
   }

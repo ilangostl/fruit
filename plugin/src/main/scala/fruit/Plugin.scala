@@ -14,11 +14,17 @@ class FruitPlugin(val global: Global) extends Plugin {
 
   private object FruitComponent extends PluginComponent with Transform with TypingTransformers {
 
-    val global: FruitPlugin.this.global.type = FruitPlugin.this.global
-    import global._
+    val global = FruitPlugin.this.global
 
-    val runsAfter = List[String]("parser")
-    override val runsBefore = List[String]("namer")
+    import global._
+    import definitions._
+
+    lazy val Fruit = definitions.getClass("fruit.Fruit")
+    lazy val MethSignal = definitions.getMember(Fruit, "signal")
+    // lazy val MethSignalR = definitions.getMember(Fruit, "signalR")
+
+    val runsAfter = List[String]("parser") // pickler
+    override val runsBefore = List[String]("namer") // uncurry
 
     val phaseName = FruitPlugin.this.name
 
@@ -34,9 +40,12 @@ class FruitPlugin(val global: Global) extends Plugin {
     class FruitTransformer(unit: CompilationUnit) extends TypingTransformer(unit) {
       private[this] var counter = 0
       override def transform(tree: Tree): Tree = super.transform(tree match {
-        case a @ Apply(fun, args) =>
-          if (fun.toString() == "signal" && args.length == 1) Apply(fun, args ::: List(Literal(Constant(next()))))
-          else a
+        // case a @ Apply(fun, args) if (fun.hasSymbol && fun.symbol == MethSignal) =>
+        // val funR = gen.mkAttributedRef(MethSignalR)
+        // treeCopy.Apply(tree, fun, args ::: List(Literal(Constant(next()))))
+        case a @ Apply(fun, args) if (fun.toString() == "signal" && args.length == 1) =>
+          // val funR = gen.mkAttributedRef(MethSignalR)
+          Apply(fun, args ::: List(Literal(Constant(next()))))
         case t => t
       })
     }

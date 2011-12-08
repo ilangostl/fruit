@@ -83,12 +83,12 @@ public class JavaDemo {
     });
     combo2Updated();
 
+    panel.add(combo1);
+    panel.add(combo2);
     panel.add(label1);
     panel.add(label2);
     panel.add(label3);
     panel.add(label4);
-    panel.add(combo1);
-    panel.add(combo2);
   }
 
   public static void main(String[] args) {
