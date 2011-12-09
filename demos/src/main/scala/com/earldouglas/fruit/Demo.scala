@@ -1,4 +1,4 @@
-package fruit
+package com.earldouglas.fruit
 
 import java.awt.Component
 import java.awt.GridLayout

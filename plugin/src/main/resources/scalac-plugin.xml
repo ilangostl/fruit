@@ -1,4 +1,4 @@
 <plugin>
   <name>fruit</name>
-  <classname>fruit.FruitPlugin</classname>
+  <classname>com.earldouglas.fruit.FruitPlugin</classname>
 </plugin>

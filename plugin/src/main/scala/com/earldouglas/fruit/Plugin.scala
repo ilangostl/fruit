@@ -1,4 +1,4 @@
-package fruit
+package com.earldouglas.fruit
 
 import scala.tools.nsc.plugins.Plugin
 import scala.tools.nsc.plugins.PluginComponent
@@ -19,7 +19,7 @@ class FruitPlugin(val global: Global) extends Plugin {
     import global._
     import definitions._
 
-    lazy val Fruit = definitions.getClass("fruit.Fruit")
+    lazy val Fruit = definitions.getClass("com.earldouglas.fruit.Fruit")
     lazy val MethSignal = definitions.getMember(Fruit, "signal")
     // lazy val MethSignalR = definitions.getMember(Fruit, "signalR")
 
