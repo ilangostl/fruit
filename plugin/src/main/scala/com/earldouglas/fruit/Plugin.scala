@@ -6,6 +6,8 @@ import scala.tools.nsc.transform.Transform
 import scala.tools.nsc.transform.TypingTransformers
 import scala.tools.nsc.Global
 
+// TODO: Fix this.  See here for help: http://suereth.blogspot.com/2009/02/levaraging-annotations-in-scala-part-2.html
+
 class FruitPlugin(val global: Global) extends Plugin {
 
   val name = "fruit"
