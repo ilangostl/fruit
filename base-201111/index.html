@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"> 
+<head> 
+  <title>Fruit</title> 
+  <link rel="stylesheet" type="text/css" media="screen, projection, print" 
+   href="slidy.css" /> 
+  <script src="slidy.js" charset="utf-8" type="text/javascript"></script> 
+  <style type="text/css"> 
+//    div.initial_prompt { visibility: hidden; }
+//    div.toolbar { visibility: hidden; }
+    div.cover { text-align: center; margin-top: 10%; }
+    div.cover h1 { margin-right: 0px; }
+    p.author { margin-top: 200px; }
+    p.location { margin-top: 100px; }
+    div.figure { text-align: center; }
+  </style> 
+  <script type="text/javascript">
+//    w3c_slidy.want_toolbar = false;
+//    w3c_slidy.add_initial_prompt = function () {};
+  </script>
+</head>
+<body>
+<div class="cover slide">
+  <h1>Fruit</h1>
+  <h2>Functional Reactive UI Thing</h2>
+  <p class="location">Bay Area Scala Enthusiasts, November 2011
+  <p class="author"><a href="http://earldouglas.com/">James Douglas</a> 
+  <br><a href="http://twitter.com/#!/jearldouglas">@jearldouglas</a></p> 
+</div>
+<div class="slide">
+  <h1>Example</h1>
+  <p>Consider a simple Swing application with a couple of combo boxes and some labels.
+  <div class="figure"><img src="fruit-4.png"></div>
+</div>
+<div class="slide">
+  <h1>Example</h1>
+  <p>Consider a simple Swing application with a couple of combo boxes and some labels.
+  <div class="figure"><img src="fruit-4.png"></div>
+  <p>Changing the selection of the combo boxes updates the text in the labels.
+  <div class="figure"><img src="fruit-5.png"><img class="arrow" src="right-arrow.png"><img src="fruit-6.png"></div>
+</div>
+<div class="slide">
+  <h1>Implementation in Java</h1>
+  <ul>
+    <li>Variables to store components of the labels</li>
+    <li>Methods to update the variables</li>
+    <li>Methods to construct values of the labels</li>
+    <li>Methods to put it all together</li>
+    <li>Action listeners</li>
+  </ul>
+</div>
+<div class="slide">
+  <h1>Implementation in Java</h1>
+  <ul>
+    <li>Variables to store components of the labels</li>
+  </ul>
+<pre>
+private String label3Prefix = "";
+private String label3Suffix = "";
+
+private String label4Prefix = "";
+private String label4Suffix = "";
+</pre>
+</div>
+<div class="slide">
+  <h1>Implementation in Java</h1>
+  <ul>
+    <li>Methods to update the variables</li>
+  </ul>
+<pre>
+private String updateLabel3Prefix(String value) {
+  label3Prefix = value;
+  return label3Text();
+}
+
+private String updateLabel3Suffix(String value) {
+  label3Suffix = value;
+  return label3Text();
+}
+
+private String updateLabel4Prefix(String value) {
+  label4Prefix = value;
+  return label4Text();
+}
+
+private String updateLabel4Suffix(String value) {
+  label4Suffix = value;
+  return label4Text();
+}
+</pre>
+</div>
+<div class="slide">
+  <h1>Implementation in Java</h1>
+  <ul>
+    <li>Methods to construct values of the labels</li>
+  </ul>
+<pre>
+private String label3Text() {
+  return label3Prefix + " is " + label3Suffix;
+}
+
+private String label4Text() {
+  return label4Prefix + " ain't " + label4Suffix;
+}
+</pre>
+</div>
+<div class="slide">
+  <h1>Implementation in Java</h1>
+  <ul>
+    <li>Methods to put it all together</li>
+  </ul>
+<pre>
+private void combo1Updated() {
+  String value = combo1.getSelectedItem().toString();
+  label1.setText(value);
+  label3.setText(updateLabel3Prefix(value));
+  label4.setText(updateLabel4Prefix(value));
+}
+
+private void combo2Updated() {
+  String value = combo2.getSelectedItem().toString();
+  label2.setText(value);
+  label3.setText(updateLabel3Suffix(value));
+  label4.setText(updateLabel4Suffix(value));
+}
+</pre>
+</div>
+<div class="slide">
+  <h1>Implementation in Java</h1>
+  <ul>
+    <li>Action listeners</li>
+  </ul>
+<pre>
+combo1.addActionListener(new ActionListener() {
+  public void actionPerformed(ActionEvent e) {
+    combo1Updated();
+  }
+});
+
+combo2.addActionListener(new ActionListener() {
+  public void actionPerformed(ActionEvent e) {
+    combo2Updated();
+  }
+});
+</pre>
+</div>
+<div class="slide">
+  <h1>Implementation in Java</h1>
+  <h2>Holy spaghetti code, Batman!</h2>
+  <ul>
+    <li>Leaky state (mutable fields)</li>
+    <li>Muddled workflow (hard to follow logic)</li>
+    <li>Maintenance headache (imagine adding a third mutable component)</li>
+  </ul>
+</div>
+<div class="slide">
+  <h1>Functional Reactive Programming</h1>
+  <ul>
+    <li>Treat mutable fields as time varying "signals"</li>
+    <li>Functions which "listen" to signals react to changes</li>
+  </ul>
+<pre>
+scala> val combo1 = new JComboBox(Array[AnyRef]("Fred", "Sam", "Joe"))
+combo1: javax.swing.JComboBox = ...
+
+scala> println("combo1 is: " + signal(combo1))
+combo1 is: Fred
+
+scala> combo1.setSelectedIndex(0)
+combo1 is: Fred
+
+scala> combo1.setSelectedIndex(1)
+combo1 is: Sam
+
+scala> combo1.setSelectedIndex(2)
+combo1 is: Joe
+</pre>
+</div>
+<div class="slide">
+  <h1>Implementation in Scala</h1>
+  <ul>
+    <li>Compare to ~60 lines of Java</li>
+    <li>More readable declarative style</li>
+  </ul>
+<pre>
+fruit { implicit s: Signals => 
+  label1.setText(signal(combo1))
+  label2.setText(signal(combo2))
+  label3.setText(signal(combo1) + " is " + signal(combo2))
+  label4.setText(signal(combo1) + " ain't " + signal(combo2))
+}
+</pre>
+</div>
+<div class="slide">
+  <h1>Fruit</h1>
+<pre>
+class Signal(selectable: Selectable) {
+
+  private var c: Option[String => Unit] = None
+
+  selectable.addActionListener(new ActionListener() {
+    def actionPerformed(e: ActionEvent) {
+      c.foreach(_(selectable.getSelectedItem.toString))
+    }
+  })
+
+  def apply(k: (String => Unit)) {
+    c = Option(k)
+    k(selectable.getSelectedItem.toString)
+  }
+}
+</pre>
+</div>
+<div class="slide">
+  <h1>Fruit</h1>
+<pre>
+trait Fruit {
+
+  type Selectable = {
+    def getSelectedItem(): AnyRef
+    def addActionListener(a: ActionListener): Unit
+  }
+
+  val signals = collection.mutable.HashMap[Int, Signal]()
+
+  def signal(selectable: Selectable, x: Int): String @suspendable = shift { k: (String => Unit) =>
+    if (!signals.contains(x)) signals(x) = new Signal(selectable)
+    signals(x)(k)
+  }
+
+  def fruit(f: => Unit @suspendable) = reset(f)
+}
+</pre>
+</div>
+<div class="slide">
+  <h1>Peeking under the rug</h1>
+  <p>A couple of approaches, each with issues
+  <ul>
+    <li>How to distinguish between signals (without recreating them on every continuation)</li>
+    <li>How to "remember" the continuations as they evolve (without running out of memory)</li>
+  </ul>
+<pre>
+fruit { implicit s: Signals => 
+  label1.setText(signal(combo1))
+  label2.setText(signal(combo2))
+  label3.setText(signal(combo1) + " is " + signal(combo2))
+  label4.setText(signal(combo1) + " ain't " + signal(combo2))
+}
+</pre>
+</div>
+<div class="slide">
+  <h1>Reference</h1>
+  <p><a href="https://github.com/jamesearldouglas/fruit">github.com/JamesEarlDouglas/fruit</a>
+  <p><a href="http://lamp.epfl.ch/~imaier/pub/DeprecatingObserversTR2010.pdf">http://lamp.epfl.ch/~imaier/pub/DeprecatingObserversTR2010.pdf</a>
+  <p><a href="http://earldouglas.com/">earldouglas.com</a>
+</div>
+</body>
+</html>
