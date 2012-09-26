@@ -2,6 +2,8 @@
 
 _22 Oct 2011_
 
+[![Build Status](http://jamestastic.com:8080/jenkins/job/fruit/badge/icon)](http://jamestastic.com:8080/jenkins/job/fruit/)
+
 Fruit is a framework for building UI workflows declaratively using continuations and functional reactive programming.
 
 To run the demo, first build the Scala compiler plugin:
