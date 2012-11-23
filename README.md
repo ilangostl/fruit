@@ -2,7 +2,7 @@
 
 _22 Oct 2011_
 
-[![Build Status](http://jamestastic.com:8080/jenkins/job/fruit/badge/icon)](http://jamestastic.com:8080/jenkins/job/fruit/)
+[![Build Status](http://jenkins.jamestastic.com/job/rubble/badge/icon)](http://jenkins.jamestastic.com/job/rubble/)
 
 Fruit is a framework for building UI workflows declaratively using continuations and functional reactive programming.
 
